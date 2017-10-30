@@ -63,6 +63,10 @@ class Question(models.Model):
     def answers(self):
         return Answer.objects.filter(question=self)
 
+    @property
+    def correct_answers(self):
+        return self.answers.filter(correct=True)
+
     def __str__(self):
         return "{}?".format(self.text)
 
