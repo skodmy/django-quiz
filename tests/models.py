@@ -82,3 +82,14 @@ class Answer(models.Model):
 
     def __str__(self):
         return self.text
+
+
+class TestResult(models.Model):
+    test = models.OneToOneField(Test)
+    user = models.OneToOneField(User)
+    mark = models.FloatField(default=0.0)
+    elapsed_time = models.TimeField()
+    mistakes_number = models.PositiveSmallIntegerField(default=0)
+
+    def __str__(self):
+        return 'test: {}, user: {}, mark: {}'.format(self.test.title, self.user.username, str(self.mark))
