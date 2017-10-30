@@ -67,6 +67,10 @@ class Question(models.Model):
     def correct_answers(self):
         return self.answers.filter(correct=True)
 
+    @property
+    def incorrect_answers(self):
+        return self.answers.exclude(correct=True)
+
     def __str__(self):
         return "{}?".format(self.text)
 
