@@ -37,6 +37,7 @@ class Test(models.Model):
     subject = models.ForeignKey(SUBJECT_MODEL)
     users = models.ManyToManyField(User)
     time_constraint = models.ForeignKey(TimeConstraint)
+    mark_constraint = models.ForeignKey(MarkConstraint)
 
     @property
     def questions(self):
