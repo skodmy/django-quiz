@@ -15,6 +15,7 @@ if not issubclass(SUBJECT_MODEL, models.Model) or getattr(getattr(SUBJECT_MODEL,
         def __str__(self):
             return self.name
     SUBJECT_MODEL = Subject
+setattr(SUBJECT_MODEL, 'tests', property(lambda self: Test.objects.filter(subject=self)))
 
 
 class TimeConstraint(models.Model):
@@ -30,6 +31,10 @@ class Test(models.Model):
     users = models.ManyToManyField(User)
     time_constraint = models.ForeignKey(TimeConstraint)
 
+    @property
+    def questions(self):
+        return Question.objects.filter(test=self)
+
     def __str__(self):
         return self.title
 
@@ -37,6 +42,10 @@ class Test(models.Model):
 class Question(models.Model):
     test = models.ForeignKey(Test)
     text = models.CharField(max_length=150)
+
+    @property
+    def answers(self):
+        return Answer.objects.filter(question=self)
 
     def __str__(self):
         return "{}?".format(self.text)
