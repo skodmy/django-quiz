@@ -43,6 +43,14 @@ class Test(models.Model):
     def questions(self):
         return Question.objects.filter(test=self)
 
+    @property
+    def question_price(self):
+        questions_count = self.questions.count()
+        if questions_count == 0:
+            from math import inf
+            return inf
+        return self.mark_constraint.max_value / questions_count
+
     def __str__(self):
         return self.title
 
