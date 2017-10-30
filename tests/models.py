@@ -25,6 +25,13 @@ class TimeConstraint(models.Model):
         return 'infinite' if self.value == time(0) else str(self.value)
 
 
+class MarkConstraint(models.Model):
+    max_value = models.PositiveSmallIntegerField()
+
+    def __str__(self):
+        return str(self.max_value)
+
+
 class Test(models.Model):
     title = models.CharField(max_length=140)
     subject = models.ForeignKey(SUBJECT_MODEL)
