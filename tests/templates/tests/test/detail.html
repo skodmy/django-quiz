@@ -5,9 +5,9 @@
         <div><h2>{{ test.title }}</h2></div>
         <div>Subject: <a>{{ test.subject }}</a></div>
         <div>Number of questions: {{ test.questions.count }}</div>
-        <div>Time: {{ test.time_constraint.value }}</div>
+        <div>Time: {{ test.time_constraint.max_value }}</div>
         <div>Maximum mark: {{ test.mark_constraint.max_value }}</div>
         <div>Question price: {{ test.question_price }}</div>
-        <div><a>Pass</a></div>
+        <div><a href="{% url 'tests:test-pass' test.pk %}">Pass</a></div>
     </div>
 {% endblock %}

@@ -1,7 +1,8 @@
 {% extends 'tests/base.html' %}
 
 {% block content %}
-    <form action="" method="POST">
+    <form action="{% url 'tests:test-examine' test.pk %}" method="POST">
+        {% csrf_token %}
         <ol>
         {% for question in test.questions %}
             <li>
@@ -10,7 +11,7 @@
                     {% for answer in question.answers %}
                         <li>
                             <label>
-                                <input type="checkbox" name="p{{ question.pk }}a{{ answer.pk }}">
+                                <input type="checkbox" name="q{{ question.pk }}a{{ answer.pk }}">
                                 {{ answer.text }}
                             </label>
                         </li>
@@ -19,7 +20,7 @@
             </li>
         {% endfor %}
         </ol>
-        <input type="hidden" name="end_time" contenteditable="false" disabled value="{{ end_time }}">
+        <input type="hidden" name="end_time" contenteditable="false" value="{{ end_time }}">
         <input type="submit" value="Send">
     </form>
 {% endblock %}

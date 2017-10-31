@@ -3,7 +3,7 @@ from django.conf import settings
 from datetime import time
 
 
-SUBJECT_MODEL = getattr(settings, 'TESTS_SUBJECT_MODEL', None.__class__)
+SUBJECT_MODEL = getattr(settings, 'TESTS_SUBJECT_MODEL', None)
 
 if SUBJECT_MODEL is None:
     class Subject(models.Model):

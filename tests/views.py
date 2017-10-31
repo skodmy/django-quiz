@@ -2,7 +2,7 @@ from django.shortcuts import render
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic import ListView, DetailView
 from datetime import time, datetime
-from .models import Test, UserTestResult, Question, Answer
+from .models import Test, UserTestResult, Answer
 
 
 class TestListView(LoginRequiredMixin, ListView):
@@ -25,7 +25,13 @@ class PassTestView(TestDetailView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['end_time'] = datetime.strftime(context['test'].time_constraint.value + datetime.now().time(), '%H:%M')
+        now_time = datetime.now().time()
+        context['end_time'] = str(
+            time(
+                context['test'].time_constraint.max_value.hour + now_time.hour + 1,
+                (context['test'].time_constraint.max_value.minute + now_time.minute) // 60,
+            ),
+        )
         return context
 
 
@@ -41,16 +47,17 @@ def examine(request, test_pk):
     questions_correct_answers = {question.pk: question.correct_answers for question in test.questions}
     mark = 0.0
     request_data = request.POST.copy()
-    end_time = datetime.strptime(request_data.pop('end_time'), '%H:%M').time()
+    end_time = datetime.strptime(request_data.pop('end_time')[0], '%H:%M:%S').time()
     now_time = datetime.now().time()
     if now_time > end_time:
         return render(request, 'tests/test/fail.html')
 
-    for user_answer, user_answer_value in request_data:
+    request_data.pop('csrfmiddlewaretoken')
+    for user_answer, user_answer_value in request_data.items():
         question_pk, answer_pk = user_answer.split('a')
-        question_pk.replace('q', '')
-        answer = Answer.objects.get(pk=answer_pk)
-        if answer in questions_correct_answers[question_pk]:
+        question_pk = question_pk.replace('q', '')
+        answer = Answer.objects.get(pk=int(answer_pk))
+        if answer in questions_correct_answers[int(question_pk)]:
             mark += answer.price
 
     return render(
@@ -62,9 +69,9 @@ def examine(request, test_pk):
                 user=request.user,
                 mark=mark,
                 elapsed_time=time(
-                    now_time.hour - (end_time.hour - test.time_constraint.value.hour),
-                    now_time.minute - (end_time.minute - test.time_constraint.value.minute),
-                    now_time.second - (end_time.second - test.time_constraint.value.second),
+                    abs(now_time.hour - (end_time.hour - test.time_constraint.max_value.hour)) // 24,
+                    abs(now_time.minute - (end_time.minute - test.time_constraint.max_value.minute)) // 60,
+                    abs(now_time.second - (end_time.second - test.time_constraint.max_value.second)) // 60,
                 ),
                 mistakes_number=0
             ),
