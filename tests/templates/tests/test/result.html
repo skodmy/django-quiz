@@ -1,0 +1,10 @@
+{% extends 'tests/base.html' %}
+
+{% block content %}
+    <div>
+        <div>Test: {{ test_result.test.title }}</div>
+        <div>Time: {{ test_result.elapsed_time }}</div>
+        <div>Mark: {{ test_result.mark }}</div>
+        <div>Number of mistakes: {{ test_result.mistakes_number }}</div>
+    </div>
+{% endblock %}

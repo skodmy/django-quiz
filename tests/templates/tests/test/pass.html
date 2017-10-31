@@ -1,0 +1,25 @@
+{% extends 'tests/base.html' %}
+
+{% block content %}
+    <form action="" method="POST">
+        <ol>
+        {% for question in test.questions %}
+            <li>
+                {{ question.text }}
+                <ul>
+                    {% for answer in question.answers %}
+                        <li>
+                            <label>
+                                <input type="checkbox" name="p{{ question.pk }}a{{ answer.pk }}">
+                                {{ answer.text }}
+                            </label>
+                        </li>
+                    {% endfor %}
+                </ul>
+            </li>
+        {% endfor %}
+        </ol>
+        <input type="hidden" name="end_time" contenteditable="false" disabled value="{{ end_time }}">
+        <input type="submit" value="Send">
+    </form>
+{% endblock %}

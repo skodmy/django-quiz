@@ -1,0 +1,9 @@
+{% extends 'tests/base.html' %}
+
+{% block content %}
+    <ul>
+    {% for test in tests %}
+        <li><a>{{ test.title }}</a></li>
+    {% endfor %}
+    </ul>
+{% endblock %}
