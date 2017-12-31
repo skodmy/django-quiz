@@ -1,5 +1,6 @@
 from django.shortcuts import render
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.decorators import login_required
 from django.views.generic import ListView, DetailView
 from datetime import time, datetime
 from .models import Test, UserTestResult, Answer
@@ -42,17 +43,30 @@ class TestResultDetailView(LoginRequiredMixin, DetailView):
     template_name = 'tests/test/result.html'
 
 
+@login_required
 def examine(request, test_pk):
+    """
+    Examines user's test "paper".
+
+    :param request: a HTTPRequest object.
+    :param test_pk: a primary key of corresponding Test object.
+    :return:
+    """
+    # querying needed test object from database by the given primary key 'test_pk'
     test = Test.objects.get(pk=test_pk)
+    # constructing questions correct answers mapping using dictionary
     questions_correct_answers = {question.pk: question.correct_answers for question in test.questions}
-    mark = 0.0
+    # creating a copy of sent data for possibility of clean up
     request_data = request.POST.copy()
+    # removing 'csrfmiddlewaretoken' from copy of sent data due to that it's unnecessary
+    request_data.pop('csrfmiddlewaretoken')
+    # extracting end time
     end_time = datetime.strptime(request_data.pop('end_time')[0], '%H:%M:%S').time()
     now_time = datetime.now().time()
     if now_time > end_time:
         return render(request, 'tests/test/fail.html')
 
-    request_data.pop('csrfmiddlewaretoken')
+    mark = 0.0
     for user_answer, user_answer_value in request_data.items():
         question_pk, answer_pk = user_answer.split('a')
         question_pk = question_pk.replace('q', '')
