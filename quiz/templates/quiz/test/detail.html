@@ -1,4 +1,4 @@
-{% extends 'tests/base.html' %}
+{% extends 'quiz/base.html' %}
 
 {% block content %}
     <div>
@@ -8,6 +8,6 @@
         <div>Time: {{ test.time_constraint.max_value }}</div>
         <div>Maximum mark: {{ test.mark_constraint.max_value }}</div>
         <div>Question price: {{ test.question_price }}</div>
-        <div><a href="{% url 'tests:test-pass' test.pk %}">Pass</a></div>
+        <div><a href="{% url 'quiz:test-pass' test.pk %}">Pass</a></div>
     </div>
 {% endblock %}

@@ -9,7 +9,7 @@ from .models import Test, UserTestResult, Answer
 class TestListView(LoginRequiredMixin, ListView):
     model = Test
     context_object_name = 'tests'
-    template_name = 'tests/list.html'
+    template_name = 'quiz/list.html'
 
     def get_queryset(self):
         return self.model.objects.filter(users__in=(self.request.user, ))
@@ -18,11 +18,11 @@ class TestListView(LoginRequiredMixin, ListView):
 class TestDetailView(LoginRequiredMixin, DetailView):
     model = Test
     pk_url_kwarg = 'test_pk'
-    template_name = 'tests/test/detail.html'
+    template_name = 'quiz/test/detail.html'
 
 
 class PassTestView(TestDetailView):
-    template_name = 'tests/test/pass.html'
+    template_name = 'quiz/test/pass.html'
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -40,7 +40,7 @@ class TestResultDetailView(LoginRequiredMixin, DetailView):
     model = UserTestResult
     pk_url_kwarg = 'test_result_pk'
     context_object_name = 'test_result'
-    template_name = 'tests/test/result.html'
+    template_name = 'quiz/test/result.html'
 
 
 @login_required
@@ -64,7 +64,7 @@ def examine(request, test_pk):
     end_time = datetime.strptime(request_data.pop('end_time')[0], '%H:%M:%S').time()
     now_time = datetime.now().time()
     if now_time > end_time:
-        return render(request, 'tests/test/fail.html')
+        return render(request, 'quiz/test/fail.html')
 
     mark = 0.0
     for user_answer, user_answer_value in request_data.items():
@@ -76,7 +76,7 @@ def examine(request, test_pk):
 
     return render(
         request,
-        'tests/test/result.html',
+        'quiz/test/result.html',
         {
             'test_result': UserTestResult.objects.create(
                 test=test,

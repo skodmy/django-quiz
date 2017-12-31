@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import SUBJECT_MODEL, TimeConstraint, MarkConstraint, Test, Question, Answer, UserTestResult, AttemptsConstraint
+from .models import SUBJECT_MODEL, TimeConstraint, MarkConstraint, Test, Question, Answer, UserTestResult
 from .models import AttemptsConstraint, UserTestAttemptsCredit
 
 if not admin.site.is_registered(SUBJECT_MODEL):

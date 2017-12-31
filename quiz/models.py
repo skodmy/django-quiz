@@ -18,7 +18,7 @@ elif isinstance(SUBJECT_MODEL, str):
     app_label, model_cls_name = SUBJECT_MODEL.split('.')
     SUBJECT_MODEL = getattr(import_module('{}.models'.format(app_label)), model_cls_name)
 
-setattr(SUBJECT_MODEL, 'tests', property(lambda self: Test.objects.filter(subject=self)))
+setattr(SUBJECT_MODEL, 'quiz', property(lambda self: Test.objects.filter(subject=self)))
 
 
 class BaseConstraint(models.Model):

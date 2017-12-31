@@ -1,7 +1,7 @@
-{% extends 'tests/base.html' %}
+{% extends 'quiz/base.html' %}
 
 {% block content %}
-    <form action="{% url 'tests:test-examine' test.pk %}" method="POST">
+    <form action="{% url 'quiz:test-examine' test.pk %}" method="POST">
         {% csrf_token %}
         <ol>
         {% for question in test.questions %}

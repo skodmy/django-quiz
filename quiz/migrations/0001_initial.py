@@ -65,9 +65,9 @@ class Migration(migrations.Migration):
             fields=[
                 ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
                 ('title', models.CharField(max_length=140)),
-                ('attempts_constraint', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='tests.AttemptsConstraint')),
-                ('mark_constraint', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='tests.MarkConstraint')),
-                ('subject', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='tests.Subject')),
+                ('attempts_constraint', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='quiz.AttemptsConstraint')),
+                ('mark_constraint', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='quiz.MarkConstraint')),
+                ('subject', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='quiz.Subject')),
             ],
         ),
         migrations.CreateModel(
@@ -85,7 +85,7 @@ class Migration(migrations.Migration):
             fields=[
                 ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
                 ('value', models.PositiveSmallIntegerField(default=1)),
-                ('test', models.OneToOneField(on_delete=django.db.models.deletion.CASCADE, to='tests.Test')),
+                ('test', models.OneToOneField(on_delete=django.db.models.deletion.CASCADE, to='quiz.Test')),
                 ('user', models.OneToOneField(on_delete=django.db.models.deletion.CASCADE, to=settings.AUTH_USER_MODEL)),
             ],
             options={
@@ -99,7 +99,7 @@ class Migration(migrations.Migration):
                 ('mark', models.FloatField(default=0.0)),
                 ('elapsed_time', models.TimeField()),
                 ('mistakes_number', models.PositiveSmallIntegerField(default=0)),
-                ('test', models.OneToOneField(on_delete=django.db.models.deletion.CASCADE, to='tests.Test')),
+                ('test', models.OneToOneField(on_delete=django.db.models.deletion.CASCADE, to='quiz.Test')),
                 ('user', models.OneToOneField(on_delete=django.db.models.deletion.CASCADE, to=settings.AUTH_USER_MODEL)),
             ],
             options={
@@ -109,7 +109,7 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='test',
             name='time_constraint',
-            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='tests.TimeConstraint'),
+            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='quiz.TimeConstraint'),
         ),
         migrations.AddField(
             model_name='test',
@@ -119,11 +119,11 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='question',
             name='test',
-            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='tests.Test'),
+            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='quiz.Test'),
         ),
         migrations.AddField(
             model_name='answer',
             name='question',
-            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='tests.Question'),
+            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='quiz.Question'),
         ),
     ]
